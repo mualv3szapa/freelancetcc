@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { TimerRacaoObj, TimerRacaoView } from "./Style";
 
-export const TimerRacao = ({ onFinish }) => {
+export const TimerRacao = ({ handleFinish, reset }) => {
   const [isTimerStart, setIsTimerStart] = useState(true);
-  const [timerDuration, setTimerDuration] = useState(5000);
-  const [resetTimer, setResetTimer] = useState(false);
+  const [timerDuration, setTimerDuration] = useState(8000);
+  
 
   return (
     <TimerRacaoView>
@@ -12,12 +12,10 @@ export const TimerRacao = ({ onFinish }) => {
         totalDuration={timerDuration}
         msecs
         start={isTimerStart}
-        reset={resetTimer}
+        reset={reset}
         // options={timer}
-        onFinish={onFinish}
-        handleFinish={() => {
-          alert("Timer Concluído!");
-        }}
+        // onFinish={onFinish}
+        handleFinish={handleFinish}
         getTime={(time) => {
           console.log(time);
         }}

@@ -9,10 +9,16 @@ import { useState, useEffect } from "react";
 export default function App() {
   const [racao, setRacao] = useState(null);
   const [peso, setPeso] = useState(null);
+  const [resetTimer, setResetTimer] = useState(false);
 
-  const ESP32_IP_ADDRESS = "172.20.10.7"; // Substitua pelo endereço IP real do seu ESP32
+  const ESP32_IP_ADDRESS = "192.168.239.44"; // Substitua pelo endereço IP real do seu ESP32
 
   // Função para buscar dados de ração do ESP32
+
+  function ResetTimerBtn() {
+    setResetTimer(true);
+  }
+
   const fetchEsp = async () => {
     try {
       let response = await fetch(`http://${ESP32_IP_ADDRESS}/getRation`);
@@ -62,12 +68,13 @@ export default function App() {
 
       {/* Temporizador de Ração */}
       <TimerRacao
-        onFinish={rotateMotor} // Adicione esta prop para integrar a lógica do temporizador
+        handleFinish={() => rotateMotor()} // Adicione esta prop para integrar a lógica do temporizador
+        reset={resetTimer}
       />
 
       {/* Exibe os dados de ração */}
       <Text style={styles.text}>
-        Ração restante: {racao ? `${racao}g` : "Carregando..."}
+        Ração restante: {racao ? `${racao}%` : "Carregando..."}
       </Text>
 
       {/* Exibe os dados de peso */}
@@ -76,7 +83,7 @@ export default function App() {
       </Text>
 
       {/* Botão para liberar ração manualmente */}
-      <BtnLiberar btnTitle={"Liberar"} onPress={rotateMotor} />
+      <BtnLiberar btnTitle={"Liberar"} onPress={() => ResetTimerBtn()} />
     </Container>
   );
 }
